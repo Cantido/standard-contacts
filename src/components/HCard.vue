@@ -1,7 +1,16 @@
 <template>
-  <div class="hcard">
-      <h2>Contact</h2>
-      Name: {{ formalName }}
+  <div class="h-card">
+    <h2 class="p-name">{{ nameValue }}</h2>
+    <h3>Phone</h3>
+    <span v-for="telProperty in telProperties" class="p-tel">
+      {{ telProperty.getParameter("type") }}
+      {{ telProperty.getFirstValue() }}
+    </span>
+    <h3>Email</h3>
+    <span v-for="emailProperty in emailProperties" class="p-email">
+      {{ emailProperty.getParameter("type") }}
+      {{ emailProperty.getFirstValue() }}
+    </span>
   </div>
 </template>
 
@@ -13,19 +22,25 @@ export default {
     vcard: String
   },
   computed: {
-  	jcal: function() {
-    	return ICAL.parse(this.vcard);
+    cardComponent: function() {
+    	return new ICAL.Component(ICAL.parse(this.vcard));
     },
-    jcomp: function() {
-    	return new ICAL.Component(this.jcal);
+    nameValue: function() {
+    	return this.cardComponent.getFirstPropertyValue("fn");
     },
-    formalName: function() {
-    	return this.jcomp.getFirstPropertyValue("fn");
+    telProperties: function() {
+      return this.cardComponent.getAllProperties("tel")
     },
+    emailProperties: function() {
+      return this.cardComponent.getAllProperties("email")
+    },
+
 	},
 }
 </script>
 
 <style scoped>
-
+.p-tel, .p-email {
+  display: block;
+}
 </style>
