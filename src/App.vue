@@ -1,29 +1,20 @@
 <template>
   <div id="app">
-    <div>
-      <h2>Contact</h2>
-      Name: {{ fn }}
-    </div>
-    <div class="vcard">
-      <h2>VCARD</h2>
-      <span v-for="line in vlines">
-        {{ line }}<br />
-      </span>
-    </div>
-    <div class="">
-      <h2>JCARD</h2>
-      {{ jcard }}
-    </div>
+    <HCard v-bind:vcard="vcard" />
   </div>
 </template>
 
 <script>
-import ICAL from 'ical.js';
+import HCard from './components/HCard.vue'
 
 export default {
   name: 'app',
+  components: {
+    HCard
+  },
   data: () => {
-    let v = `
+    return {
+      vcard: `
 BEGIN:VCARD\n
 VERSION:3.0\n
 PRODID:ez-vcard 0.10.4\n
@@ -31,19 +22,7 @@ N:Anderson;Thomas\n
 FN:Thomas Anderson\n
 TEL;TYPE=CELL:+1 (555) 555-5555\n
 EMAIL;TYPE=HOME:neo@example.com\n
-END:VCARD\n
-`;
-
-      let j = ICAL.parse(v)
-      let jcomp = new ICAL.Component(j);
-
-
-
-    return {
-      vcard: v,
-      vlines: v.split('\n'),
-      jcard: j,
-      fn: jcomp.getFirstPropertyValue("fn")
+END:VCARD\n`
     }
   }
 }
