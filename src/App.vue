@@ -1,30 +1,39 @@
 <template>
-  <div id="app">
-    <HCard v-bind:vcard="vcard" />
+<div id="app">
+
+  <HCard v-if="vcard" v-bind:vcard="vcard" />
+
+  <div class="" v-else>
+    That is not a valid vcard
   </div>
+</div>
 </template>
 
 <script>
 import HCard from './components/HCard.vue'
+
+import BridgeManager from './lib/BridgeManager.js';
 
 export default {
   name: 'app',
   components: {
     HCard
   },
+  mounted: function() {
+    BridgeManager.get().addUpdateObserver(this.updateNote);
+  },
   data: () => {
     return {
-      vcard: `
-BEGIN:VCARD\n
-VERSION:3.0\n
-PRODID:ez-vcard 0.10.4\n
-N:Anderson;Thomas\n
-FN:Thomas Anderson\n
-TEL;TYPE=CELL:+1 (555) 555-5555\n
-EMAIL;TYPE=HOME:neo@example.com\n
-END:VCARD\n`
+      vcard: ''
+    };
+  },
+  methods: {
+    updateNote: function() {
+      let note = BridgeManager.get().getNote();
+      console.log(note);
+      this.vcard = note.content.text
     }
-  }
+  },
 }
 </script>
 
@@ -37,6 +46,7 @@ END:VCARD\n`
   margin-top: 60px;
   margin-left: 30%;
 }
+
 .vcard {
   text-align: left;
 }
