@@ -33,6 +33,13 @@ export default class BridgeManager {
   getNote() {
     return this.note;
   }
+  setNote(text) {
+    let note = this.note;
+    this.componentManager.saveItemWithPresave(note, () => {
+      note.content.text = text;
+      this.note.preview_text = text.substring(0, 80);
+    });
+  }
 
   initiateBridge() {
     var permissions = [{
