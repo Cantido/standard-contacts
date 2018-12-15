@@ -1,5 +1,10 @@
 <template>
 <div id="hcard-bridge">
+  <!-- If we used the vcard property as the bind value,
+      then we could just use v-model.
+      However, then we would be triggering a loop of updates.
+      So, we will always display the note from the bridge,
+      and pass updates back to the bridge. -->
   <HCard
     v-if="vcard"
     v-bind:value="noteFromBridge"
