@@ -2,7 +2,7 @@
   "identifier": "io.github.cantido.standard-contacts",
   "name": "Standard Contacts",
   "content_type": "SN|Component",
-  "area": "editor-stack",
+  "area": "editor-editor",
   "version": "1.0.0",
   "url": "http://localhost:8080"
 }
