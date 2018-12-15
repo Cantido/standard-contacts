@@ -30,7 +30,6 @@ export default {
   methods: {
     updateNote: function() {
       let note = BridgeManager.get().getNote();
-      console.log(note);
       this.vcard = note.content.text
     }
   },
@@ -43,8 +42,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
-  margin-left: 30%;
 }
 
 .vcard {

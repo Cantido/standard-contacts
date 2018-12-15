@@ -35,7 +35,6 @@ export default class BridgeManager {
   }
 
   initiateBridge() {
-    console.log("initiating bridge")
     var permissions = [{
       name: "stream-context-item"
       // name: "stream-items"
