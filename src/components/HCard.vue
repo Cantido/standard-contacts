@@ -11,6 +11,18 @@
 <script>
 import ICAL from 'ical.js';
 
+function componentProperty(name) {
+  return {
+    get: function() {
+      return this.cardComponent.getFirstPropertyValue(name);
+    },
+    set: function(newValue) {
+      this.cardComponent.updatePropertyWithValue(name, newValue);
+      this.$emit('input', this.cardComponent.toString());
+    }
+  }
+}
+
 export default {
   name: 'HCard',
   props: {
@@ -25,15 +37,7 @@ export default {
     cardComponent: function() {
       return new ICAL.Component(ICAL.parse(this.updatedVcard));
     },
-    fnVal: {
-      get: function() {
-        return this.cardComponent.getFirstPropertyValue("fn");
-      },
-      set: function(newValue) {
-        this.cardComponent.updatePropertyWithValue("fn", newValue);
-        this.$emit('input', this.cardComponent.toString());
-      }
-    },
+    fnVal: componentProperty.bind(this, "fn")(),
   },
 }
 </script>
