@@ -1,16 +1,16 @@
 <template>
-<div class="h-card">
-  <label>Formatted name</label>
-  <input v-model="fnVal" class="fn">
+<div class="vcard">
+  <label for="fn">Formatted name</label>
+  <input id="fn" v-model="fnVal" class="fn">
 
-  <label>Full name</label>
-  <input v-model="name" class="n">
+  <label for="n">Full name</label>
+  <input id="n" v-model="name" class="n">
 
-  <label>Phone</label>
-  <input v-model="tel" class="tel">
+  <label for="tel">Phone</label>
+  <input id="tel" v-model="tel" class="tel">
 
-  <label>Email</label>
-  <input v-model="email" class="email">
+  <label for="email">Email</label>
+  <input id="email" v-model="email" class="email">
 </div>
 </template>
 
@@ -52,7 +52,15 @@ export default {
 </script>
 
 <style scoped>
+.vcard {
+  display: grid;
+  grid-template-columns: [labels] 8em [values] auto;
+}
+
 label {
-  display: block;
+  grid-column: labels / span 1;
+}
+input {
+  grid-column: values / span 1;
 }
 </style>
