@@ -1,17 +1,23 @@
 <template>
 <div class="h-card">
-  <input v-model="fnVal" class="p-name">
-  <!-- <h3>Email</h3>
-  <span v-for="emailProperty in emailProperties" class="p-email">
-    {{ emailProperty.getFirstValue() }}
-  </span> -->
+  <label>Formatted name</label>
+  <input v-model="fnVal" class="fn">
+
+  <label>Full name</label>
+  <input v-model="name" class="n">
+
+  <label>Phone</label>
+  <input v-model="tel" class="tel">
+
+  <label>Email</label>
+  <input v-model="email" class="email">
 </div>
 </template>
 
 <script>
 import ICAL from 'ical.js';
 
-function componentProperty(name) {
+function firstPropertyValue(name) {
   return {
     get: function() {
       return this.cardComponent.getFirstPropertyValue(name);
@@ -37,14 +43,16 @@ export default {
     cardComponent: function() {
       return new ICAL.Component(ICAL.parse(this.updatedVcard));
     },
-    fnVal: componentProperty.bind(this, "fn")(),
+    fnVal: firstPropertyValue.bind(this, "fn")(),
+    tel: firstPropertyValue.bind(this, "tel")(),
+    email: firstPropertyValue.bind(this, "email")(),
+    name: firstPropertyValue.bind(this, "n")(),
   },
 }
 </script>
 
 <style scoped>
-.p-tel,
-.p-email {
+label {
   display: block;
 }
 </style>
