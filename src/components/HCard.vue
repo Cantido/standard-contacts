@@ -1,33 +1,14 @@
 <template>
 <div class="vcard">
-  <label for="fn">Formatted name</label>
-  <input id="fn" v-model="fnVal" class="fn">
-
-  <label for="n">Full name</label>
-  <input id="n" v-model="name" class="n">
-
-  <label for="tel">Phone</label>
-  <input id="tel" v-model="tel" class="tel">
-
-  <label for="email">Email</label>
-  <input id="email" v-model="email" class="email">
+  <template v-for="property in jcardObj">
+    <label :for="property.name">{{property.name}}</label>
+    <input :id="property.name" v-model="property.value">
+  </template>
 </div>
 </template>
 
 <script>
 import ICAL from 'ical.js';
-
-function firstPropertyValue(name) {
-  return {
-    get: function() {
-      return this.cardComponent.getFirstPropertyValue(name);
-    },
-    set: function(newValue) {
-      this.cardComponent.updatePropertyWithValue(name, newValue);
-      this.$emit('input', this.cardComponent.toString());
-    }
-  }
-}
 
 export default {
   name: 'HCard',
@@ -36,17 +17,32 @@ export default {
   },
   data: function() {
     return {
-      updatedVcard: this.value
+      updatedVcard: this.value,
+      formtest: [{name:''},{name:''}]
+    }
+  },
+  watchers: {
+    formtest: function(newval) {
+      console.log(formtest)
     }
   },
   computed: {
     cardComponent: function() {
       return new ICAL.Component(ICAL.parse(this.updatedVcard));
     },
-    fnVal: firstPropertyValue.bind(this, "fn")(),
-    tel: firstPropertyValue.bind(this, "tel")(),
-    email: firstPropertyValue.bind(this, "email")(),
-    name: firstPropertyValue.bind(this, "n")(),
+    jcard: function() {
+      return ICAL.parse(this.updatedVcard)[1];
+    },
+    jcardObj: function() {
+      return this.jcard.map(function(prop) {
+        return ({
+          name: prop[0],
+          params: prop[1],
+          type: prop[2],
+          value: prop[3]
+        });
+      });
+    },
   },
 }
 </script>
