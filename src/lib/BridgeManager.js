@@ -37,8 +37,15 @@ export default class BridgeManager {
     let note = this.note;
     this.componentManager.saveItemWithPresave(note, () => {
       note.content.text = text;
-      this.note.preview_text = text.substring(0, 80);
     });
+    return this; // for chaining
+  }
+  updateNote(content) {
+    let note = this.note;
+    this.componentManager.saveItemWithPresave(note, () => {
+      note.content = {...note.content, ...content};
+    });
+    return this; // for chaining
   }
 
   initiateBridge() {

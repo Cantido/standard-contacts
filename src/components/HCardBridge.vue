@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import ICAL from 'ical.js';
 import HCard from './HCard.vue'
 import BridgeManager from '../lib/BridgeManager.js';
 
@@ -42,7 +43,13 @@ export default {
   },
   watch: {
     vcard: function(newVcard) {
-      BridgeManager.get().setNote(newVcard);
+    const comp = new ICAL.Component(ICAL.parse(newVcard));
+      BridgeManager.get().updateNote({
+        text: newVcard,
+        title: comp.getFirstPropertyValue("fn").substring(0, 80),
+        preview_text: comp.getFirstPropertyValue("tel"),
+        preview_html: comp.getFirstPropertyValue("tel"),
+      })
     }
   },
   methods: {
