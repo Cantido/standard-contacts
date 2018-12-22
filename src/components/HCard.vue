@@ -18,6 +18,12 @@ export default {
   data: function() {
     return {
       updatedVcard: this.value,
+      formtest: [{name:''},{name:''}]
+    }
+  },
+  watchers: {
+    formtest: function(newval) {
+      console.log(formtest)
     }
   },
   computed: {
