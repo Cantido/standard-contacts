@@ -1,9 +1,12 @@
 <template>
 <div class="vcard">
-  <template v-for="property in jcardObj">
-    <label :for="property.name">{{property.name}}</label>
-    <input :id="property.name" v-model="property.value">
+  <template v-for="(property, index) in jcard[1]">
+    <label :for="property[0]">{{property[0]}}</label>
+    <input :id="property[0]" :name="property[0]" v-model="property[3]">
   </template>
+  <pre>
+    {{ jcard}}
+  </pre>
 </div>
 </template>
 
@@ -17,33 +20,15 @@ export default {
   },
   data: function() {
     return {
-      updatedVcard: this.value,
-      formtest: [{name:''},{name:''}]
-    }
+      jcard: ICAL.parse(this.value),
+    };
   },
-  watchers: {
-    formtest: function(newval) {
-      console.log(formtest)
-    }
-  },
-  computed: {
-    cardComponent: function() {
-      return new ICAL.Component(ICAL.parse(this.updatedVcard));
-    },
-    jcard: function() {
-      return ICAL.parse(this.updatedVcard)[1];
-    },
-    jcardObj: function() {
-      return this.jcard.map(function(prop) {
-        return ({
-          name: prop[0],
-          params: prop[1],
-          type: prop[2],
-          value: prop[3]
-        });
-      });
+  watch: {
+    jcard: function(newval) {
+      this.$emit('input', new ICAL.Component(newval).toString());
     },
   },
+
 }
 </script>
 
