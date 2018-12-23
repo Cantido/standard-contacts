@@ -29,6 +29,9 @@ export default {
     return {
       jcard: ICAL.parse(this.value),
       hiddenProperties: [
+        'name',
+        'profile',
+        'source',
         'prodid',
         'version'
       ]
@@ -38,7 +41,7 @@ export default {
     displayedProperties: function() {
       let hiddenProperties = this.hiddenProperties;
       return this.jcard[1].filter(function(property) {
-        return !hiddenProperties.includes(property[0])
+        return !hiddenProperties.includes(property[0].toLowerCase())
       });
     },
     propertyKeys: function() {
