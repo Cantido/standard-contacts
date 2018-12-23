@@ -1,7 +1,7 @@
 <template>
 <div class="vcard">
-  <div v-for="(property, index) in displayedProperties">
-    <Property v-model='displayedProperties[index]' :key="keyForProperty(property)" />
+  <div v-for="(property, index) in displayedProperties" :key="keyForProperty(property)">
+    <Property v-model='displayedProperties[index]' />
     <button type="button" name="button" @click="newProperty(property)">+</button>
     <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
   </div>
