@@ -1,6 +1,9 @@
 <template>
 <div class="vcard">
-  <Property v-for="(property, index) in jcard[1]" v-model='jcard[1][index]'/>
+  <Property
+    v-for="(property, index) in jcard[1]"
+    v-model='jcard[1][index]'
+    :key="property[0] + '-' + property[3].type"/>
 
   <h2>parsed JSON:</h2>
   <pre>
