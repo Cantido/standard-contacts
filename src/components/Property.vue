@@ -3,10 +3,10 @@
   <label :for="prop[0]">
     {{prop[0]}}
     <span class="type" v-if="prop[1].type">
-      ({{prop[1].type}})
+      (<input type="text" name="" value="" v-model="prop[1].type">)
     </span>
   </label>
-  <input :id="prop[0]" :name="prop[0]" v-model="prop[3]">
+  <input class="value" :id="prop[0]" :name="prop[0]" v-model="prop[3]">
 </span>
 </template>
 
@@ -33,14 +33,14 @@ export default {
 .property {
   display:inline-block;
 }
-.type {
-  text-transform: lowercase;
+.type input {
+  width: 4em;
 }
 label {
   display: inline-block;
   width: 8em;
 }
-input {
+.value {
   display: inline-block;
   width: auto;
 }
