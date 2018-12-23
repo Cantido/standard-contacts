@@ -1,5 +1,5 @@
 <template lang="html">
-<span class="property">
+<span :class="['property', prop[0]]">
   <label :for="prop[0]">
     {{prop[0]}}
     <span class="type" v-if="prop[1].type">
