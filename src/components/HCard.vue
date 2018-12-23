@@ -1,6 +1,6 @@
 <template>
 <div class="vcard">
-  <div v-for="(property, index) in displayedProperties" v-if="property[0] != 'prodid' && property[0] != 'version'">
+  <div v-for="(property, index) in displayedProperties">
     <Property v-model='displayedProperties[index]' :key="keyForProperty(property)" />
     <button type="button" name="button" @click="newProperty(property)">+</button>
     <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
