@@ -1,7 +1,7 @@
 <template>
 <div class="vcard">
-  <div v-for="(property, index) in jcard[1]" v-if="property[0] != 'prodid' && property[0] != 'version'">
-    <Property v-model='jcard[1][index]' :key="property[0] + '-' + property[1].type" />
+  <div v-for="(property, index) in displayedProperties" v-if="property[0] != 'prodid' && property[0] != 'version'">
+    <Property v-model='displayedProperties[index]' :key="propertyKeys[index]" />
     <button type="button" name="button" @click="newProperty(property)">+</button>
     <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
   </div>
@@ -28,7 +28,28 @@ export default {
   data: function() {
     return {
       jcard: ICAL.parse(this.value),
+      hiddenProperties: [
+        'prodid',
+        'version'
+      ]
     };
+  },
+  computed: {
+    displayedProperties: function() {
+      let hiddenProperties = this.hiddenProperties;
+      return this.jcard[1].filter(function(property) {
+        return !hiddenProperties.includes(property[0])
+      });
+    },
+    propertyKeys: function() {
+      return this.displayedProperties.map(function(prop) {
+        if (prop[1].type) {
+          prop[0] + '-' + prop[1].type
+        } else {
+          prop[0]
+        }
+      })
+    }
   },
   watch: {
     jcard: function(newval) {
