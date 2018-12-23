@@ -1,7 +1,7 @@
 <template lang="html">
 <span :class="['property', prop[0]]">
   <label :for="prop[0]">
-    {{prop[0]}}
+    <span class="property-name">{{fancyName(prop[0])}}</span>
     <span class="type" v-if="prop[1].type">
       (<input type="text" name="" value="" v-model="prop[1].type">)
     </span>
@@ -19,12 +19,23 @@ export default {
   data: function() {
     return {
       prop: this.value,
-    }
+      fancyNames: {
+        n: 'name details',
+        fn: 'name',
+        tel: 'phone',
+        email: 'email'
+      },
+    };
   },
   watch: {
     prop: function(newprop) {
       this.$emit('input', newprop);
     },
+  },
+  methods: {
+    fancyName: function(name) {
+      return this.fancyNames[name] || name;
+    }
   },
 }
 </script>
