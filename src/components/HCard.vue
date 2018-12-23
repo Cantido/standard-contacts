@@ -1,7 +1,7 @@
 <template>
 <div class="vcard">
   <div v-for="(property, index) in displayedProperties" v-if="property[0] != 'prodid' && property[0] != 'version'">
-    <Property v-model='displayedProperties[index]' :key="propertyKeys[index]" />
+    <Property v-model='displayedProperties[index]' :key="keyForProperty(property)" />
     <button type="button" name="button" @click="newProperty(property)">+</button>
     <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
   </div>
@@ -44,15 +44,6 @@ export default {
         return !hiddenProperties.includes(property[0].toLowerCase())
       });
     },
-    propertyKeys: function() {
-      return this.displayedProperties.map(function(prop) {
-        if (prop[1].type) {
-          prop[0] + '-' + prop[1].type
-        } else {
-          prop[0]
-        }
-      })
-    }
   },
   watch: {
     jcard: function(newval) {
@@ -65,6 +56,13 @@ export default {
     },
     rmProperty: function(index) {
       this.jcard[1].splice(index, 1)
+    },
+    keyForProperty: function(prop) {
+      if (prop[1].type) {
+        return prop[0] + '-' + prop[1].type;
+      } else {
+        return prop[0];
+      }
     },
     clearedClone: function(template) {
       return [
