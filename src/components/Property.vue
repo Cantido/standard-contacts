@@ -1,5 +1,5 @@
 <template lang="html">
-<span class="property" v-if="prop[0] != 'prodid' && prop[0] != 'version'">
+<span class="property">
   <label :for="prop[0]">
     {{prop[0]}}
     <span class="type" v-if="prop[1].type">
@@ -18,7 +18,7 @@ export default {
   },
   data: function() {
     return {
-      prop: this.value
+      prop: this.value,
     }
   },
   watch: {
@@ -31,7 +31,7 @@ export default {
 
 <style lang="css">
 .property {
-  display:block;
+  display:inline-block;
 }
 .type {
   text-transform: lowercase;

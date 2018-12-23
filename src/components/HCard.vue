@@ -1,9 +1,10 @@
 <template>
 <div class="vcard">
-  <Property
-    v-for="(property, index) in jcard[1]"
-    v-model='jcard[1][index]'
-    :key="property[0] + '-' + property[3].type"/>
+  <div v-for="(property, index) in jcard[1]" v-if="property[0] != 'prodid' && property[0] != 'version'">
+    <Property v-model='jcard[1][index]' :key="property[0] + '-' + property[1].type" />
+    <button type="button" name="button" @click="newProperty(property)">+</button>
+    <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
+  </div>
 
   <h2>parsed JSON:</h2>
   <pre>
@@ -32,6 +33,22 @@ export default {
   watch: {
     jcard: function(newval) {
       this.$emit('input', new ICAL.Component(newval).toString());
+    },
+  },
+  methods: {
+    newProperty: function(lookalike) {
+      this.jcard[1].push(this.clearedClone(lookalike))
+    },
+    rmProperty: function(index) {
+      this.jcard[1].splice(index, 1)
+    },
+    clearedClone: function(template) {
+      return [
+        template[0],
+        template[1],
+        template[2],
+        ''
+      ];
     },
   },
 }
