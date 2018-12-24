@@ -3,7 +3,7 @@
   <div v-for="(property, index) in displayedProperties" :key="keyForProperty(property)">
     <Property v-model='displayedProperties[index]' />
     <button type="button" name="button" @click="newProperty(property)">+</button>
-    <button type="button" name="button" @click="rmProperty(index)">&minus;</button>
+    <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
   </div>
 
   <h2>parsed JSON:</h2>
@@ -54,8 +54,14 @@ export default {
     newProperty: function(lookalike) {
       this.jcard[1].push(this.clearedClone(lookalike))
     },
-    rmProperty: function(index) {
-      this.jcard[1].splice(index, 1)
+    rmProperty: function(property) {
+      let i = this.jcard[1].findIndex(function(prop) {
+        return prop[0] == property[0] &&
+               prop[1] == property[1] &&
+               prop[2] == property[2] &&
+               prop[3] == property[3];
+      });
+      this.jcard[1].splice(i, 1)
     },
     keyForProperty: function(prop) {
       if (prop[1].type) {
