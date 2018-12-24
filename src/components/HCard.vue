@@ -1,11 +1,36 @@
 <template>
 <div class="vcard">
-  <div v-for="(property, index) in displayedProperties" :key="keyForProperty(property)">
-    <Property v-model='displayedProperties[index]' />
-    <button type="button" name="button" @click="newProperty(property)">+</button>
-    <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
-  </div>
+  <section>
+    <div v-for="(property, index) in nameProperties" :key="keyForProperty(property)">
+      <Property v-model='nameProperties[index]' />
+      <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
+    </div>
+  </section>
 
+  <section>
+    <div v-for="(property, index) in phoneProperties" :key="keyForProperty(property)">
+      <Property v-model='phoneProperties[index]' />
+      <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
+    </div>
+    <span class="labelspacer"></span>
+    <button type="button" name="button" class="add" @click="pushProperty(['tel', {type:'HOME'}, 'text', ''])">Add a phone</button>
+  </section>
+
+  <section>
+    <div v-for="(property, index) in emailProperties" :key="keyForProperty(property)">
+      <Property v-model='emailProperties[index]' />
+      <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
+    </div>
+    <span class="labelspacer"></span>
+    <button type="button" name="button" class="add" @click="pushProperty(['email', {type:'HOME'}, 'text', ''])">Add an email address</button>
+  </section>
+
+  <section>
+    <div v-for="(property, index) in otherProperties" :key="keyForProperty(property)">
+      <Property v-model='otherProperties[index]' />
+      <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
+    </div>
+  </section>
   <h2>parsed JSON:</h2>
   <pre>
     {{ jcard }}
@@ -44,6 +69,26 @@ export default {
         return !hiddenProperties.includes(property[0].toLowerCase())
       });
     },
+    nameProperties: function() {
+      return this.displayedProperties.filter(function(property) {
+        return ['n', 'fn'].includes(property[0]);
+      });
+    },
+    phoneProperties: function() {
+      return this.displayedProperties.filter(function(property) {
+        return property[0] == 'tel'
+      });
+    },
+    emailProperties: function() {
+      return this.displayedProperties.filter(function(property) {
+        return property[0] == 'email'
+      });
+    },
+    otherProperties: function() {
+      return this.displayedProperties.filter(function(property) {
+        return !['fn', 'n', 'tel', 'email'].includes(property[0].toLowerCase());
+      });
+    }
   },
   watch: {
     jcard: function(newval) {
@@ -51,8 +96,11 @@ export default {
     },
   },
   methods: {
+    pushProperty: function(property) {
+      this.jcard[1].push(property);
+    },
     newProperty: function(lookalike) {
-      this.jcard[1].push(this.clearedClone(lookalike))
+      this.pushProperty(this.clearedClone(lookalike));
     },
     rmProperty: function(property) {
       let i = this.jcard[1].findIndex(function(prop) {
@@ -83,5 +131,11 @@ export default {
 </script>
 
 <style>
-
+section {
+  margin-bottom: 1em;
+}
+.labelspacer {
+  display: inline-block;
+  width: 8em;
+}
 </style>
