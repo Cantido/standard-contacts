@@ -27,11 +27,6 @@ export default {
       },
     };
   },
-  watch: {
-    prop: function(newprop) {
-      this.$emit('input', newprop);
-    },
-  },
   methods: {
     fancyName: function(name) {
       return this.fancyNames[name] || name;
