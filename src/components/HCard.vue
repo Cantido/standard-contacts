@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     updateProperty: function(key, newValue) {
-      console.log("updating property " + key + " to " + newValue)
+      console.log("updating property " + JSON.stringify(key) + " to " + JSON.stringify(newValue))
       const keyForPropertyFn = this.keyForProperty;
       const i = this.jcard[1].findIndex(function(element) {
         return key == keyForPropertyFn(element);

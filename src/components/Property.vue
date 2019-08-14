@@ -33,7 +33,7 @@ export default {
   },
   watch: {
     jCardPropValue: function(newValue) {
-      console.log("emitting change to jprop value to " + newValue);
+      console.log("emitting change to jprop value to " + JSON.stringify(newValue));
       this.$emit('input', [this.jCardProp[0],this.jCardProp[1], this.jCardProp[2], newValue]);
     }
   },
