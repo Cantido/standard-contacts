@@ -1,12 +1,12 @@
 <template lang="html">
-<span :class="['property', jCardProp[0]]">
-  <label :for="jCardProp[0]">
+<span :class="['property', uglyPropertyName]">
+  <label :for="uglyPropertyName">
     <span class="property-name">{{fancyPropertyName}}</span>
-    <span class="type" v-if="jCardProp[1].type">
-      (<input type="text" name="" value="" v-model="jCardProp[1].type">)
+    <span class="type" v-if="jCardPropType">
+      (<input type="text" name="" value="" v-model="jCardPropType">)
     </span>
   </label>
-  <input class="value" :id="jCardProp[0]" :name="jCardProp[0]" v-model="jCardPropValue">
+  <input class="value" :id="uglyPropertyName" :name="uglyPropertyName" v-model="jCardPropValue">
 </span>
 </template>
 
@@ -22,6 +22,10 @@ export default {
   data: function() {
     return {
       jCardProp: this.value,
+      uglyPropertyName: this.value[0],
+      jCardPropParams: this.value[1],
+      jCardPropType: this.value[1].type,
+      jCardPropValueType: this.value[2],
       jCardPropValue: this.value[3],
       fancyNames: {
         n: 'name details',
@@ -32,14 +36,19 @@ export default {
     };
   },
   watch: {
+    jCardPropType: function(newPropType) {
+      console.log("emitting change to jprop type to " + JSON.stringify(newPropType));
+      this.$emit('input', [uglyPropertyName, {...jCardPropParams, type: newPropType}, jCardPropValueType, jCardPropValue]);
+    },
     jCardPropValue: function(newValue) {
       console.log("emitting change to jprop value to " + JSON.stringify(newValue));
-      this.$emit('input', [this.jCardProp[0],this.jCardProp[1], this.jCardProp[2], newValue]);
+      this.$emit('input', [uglyPropertyName, jCardPropParams, jCardPropValueType, newValue]);
     }
   },
   computed: {
+
     fancyPropertyName: function() {
-      return this.fancyNames[this.jCardProp[0]] || this.jCardProp[0];
+      return this.fancyNames[this.uglyPropertyName] || this.uglyPropertyName;
     }
   }
 }
