@@ -38,11 +38,24 @@ export default {
   watch: {
     jCardPropType: function(newPropType) {
       console.log("emitting change to jprop type to " + JSON.stringify(newPropType));
-      this.$emit('input', [uglyPropertyName, {...jCardPropParams, type: newPropType}, jCardPropValueType, jCardPropValue]);
+      this.$emit('input', [
+        this.uglyPropertyName,
+        {
+          ...this.jCardPropParams,
+          type: newPropType
+        },
+        this.jCardPropValueType,
+        this.jCardPropValue
+      ]);
     },
     jCardPropValue: function(newValue) {
       console.log("emitting change to jprop value to " + JSON.stringify(newValue));
-      this.$emit('input', [uglyPropertyName, jCardPropParams, jCardPropValueType, newValue]);
+      this.$emit('input', [
+        this.uglyPropertyName,
+        this.jCardPropParams,
+        this.jCardPropValueType,
+        newValue
+      ]);
     }
   },
   computed: {
