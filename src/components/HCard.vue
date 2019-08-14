@@ -2,14 +2,14 @@
 <div class="vcard">
   <section>
     <div v-for="(property, index) in nameProperties" :key="keyForProperty(property)">
-      <Property v-model='nameProperties[index]' />
+      <Property v-bind:value='nameProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
   </section>
 
   <section>
     <div v-for="(property, index) in phoneProperties" :key="keyForProperty(property)">
-      <Property v-model='phoneProperties[index]' />
+      <Property v-bind:value='phoneProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
     <span class="labelspacer"></span>
@@ -18,7 +18,7 @@
 
   <section>
     <div v-for="(property, index) in emailProperties" :key="keyForProperty(property)">
-      <Property v-model='emailProperties[index]' />
+      <Property v-bind:value='emailProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
     <span class="labelspacer"></span>
@@ -27,7 +27,7 @@
 
   <section>
     <div v-for="(property, index) in otherProperties" :key="keyForProperty(property)">
-      <Property v-model='otherProperties[index]' />
+      <Property v-bind:value='otherProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
   </section>
@@ -96,6 +96,15 @@ export default {
     },
   },
   methods: {
+    updateProperty: function(key, newValue) {
+      console.log("updating property " + key + " to " + newValue)
+      const keyForPropertyFn = this.keyForProperty;
+      const i = this.jcard[1].findIndex(function(element) {
+        return key == keyForPropertyFn(element);
+      });
+
+      this.jcard[1].splice(i, 1, newValue);
+    },
     pushProperty: function(property) {
       this.jcard[1].push(property);
     },
