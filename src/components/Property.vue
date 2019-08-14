@@ -1,12 +1,12 @@
 <template lang="html">
-<span :class="['property', prop[0]]">
-  <label :for="prop[0]">
+<span :class="['property', jCardProp[0]]">
+  <label :for="jCardProp[0]">
     <span class="property-name">{{fancyPropertyName}}</span>
-    <span class="type" v-if="prop[1].type">
-      (<input type="text" name="" value="" v-model="prop[1].type">)
+    <span class="type" v-if="jCardProp[1].type">
+      (<input type="text" name="" value="" v-model="jCardProp[1].type">)
     </span>
   </label>
-  <input class="value" :id="prop[0]" :name="prop[0]" v-model="prop[3]">
+  <input class="value" :id="jCardProp[0]" :name="jCardProp[0]" v-model="jCardProp[3]">
 </span>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   },
   data: function() {
     return {
-      prop: this.value,
+      jCardProp: this.value,
       fancyNames: {
         n: 'name details',
         fn: 'name',
@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     fancyPropertyName: function() {
-      return this.fancyNames[this.prop[0]] || this.prop[0];
+      return this.fancyNames[this.jCardProp[0]] || this.jCardProp[0];
     }
   }
 }
