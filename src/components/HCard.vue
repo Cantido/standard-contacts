@@ -1,5 +1,9 @@
 <template>
 <div class="vcard">
+  <!-- Binding values to the Property components is a little over-complicated,
+       because I want to pass Arrays back and forth, but Vue's object-change
+       caveats, combined with modifying arrays with multiple references,
+       makes that tricky. -->
   <section>
     <div v-for="(property, index) in nameProperties" :key="keyForProperty(property)">
       <Property v-bind:value='nameProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
