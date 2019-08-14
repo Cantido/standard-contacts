@@ -14,10 +14,7 @@
 export default {
   name: 'Property',
   props: {
-    name: String,
-    params: Object,
-    type: String,
-    value: [String, Array],
+    value: Array,
   },
   data: function() {
     return {
