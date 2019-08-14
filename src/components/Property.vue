@@ -2,7 +2,7 @@
 <span :class="['property', uglyPropertyName]">
   <label :for="uglyPropertyName">
     <span class="property-name">{{fancyPropertyName}}</span>
-    <span class="type" v-if="jCardPropType">
+    <span class="type" v-if="jCardPropType != undefined">
       (<input type="text" name="" value="" v-model="jCardPropType">)
     </span>
   </label>
