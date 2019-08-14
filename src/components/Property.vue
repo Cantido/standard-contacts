@@ -1,7 +1,7 @@
 <template lang="html">
 <span :class="['property', prop[0]]">
   <label :for="prop[0]">
-    <span class="property-name">{{fancyName(prop[0])}}</span>
+    <span class="property-name">{{fancyPropertyName}}</span>
     <span class="type" v-if="prop[1].type">
       (<input type="text" name="" value="" v-model="prop[1].type">)
     </span>
@@ -27,11 +27,11 @@ export default {
       },
     };
   },
-  methods: {
-    fancyName: function(name) {
-      return this.fancyNames[name] || name;
+  computed: {
+    fancyPropertyName: function() {
+      return this.fancyNames[this.prop[0]] || this.prop[0];
     }
-  },
+  }
 }
 </script>
 
