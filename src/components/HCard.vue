@@ -36,9 +36,7 @@
     </div>
   </section>
   <h2>parsed JSON:</h2>
-  <pre>
-    {{ jcard }}
-  </pre>
+  <pre>{{ jcard }}</pre>
 </div>
 </template>
 
