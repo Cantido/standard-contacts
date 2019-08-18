@@ -43,6 +43,7 @@
 <script>
 import ICAL from 'ical.js';
 import Property from './Property.vue';
+import * as JCard from '../lib/JCard.js';
 
 export default {
   name: 'HCard',
@@ -73,19 +74,19 @@ export default {
       this.$emit('input', newComponent.toString());
     },
     displayedProperties: function() {
-      return this.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);
+      return JCard.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);
     },
     nameProperties: function() {
-      return this.filterPropertiesByName(this.displayedProperties, ['n', 'fn']);
+      return JCard.filterPropertiesByName(this.displayedProperties, ['n', 'fn']);
     },
     phoneProperties: function() {
-      return this.filterPropertiesByName(this.displayedProperties, 'tel');
+      return JCard.filterPropertiesByName(this.displayedProperties, 'tel');
     },
     emailProperties: function() {
-      return this.filterPropertiesByName(this.displayedProperties, 'email');
+      return JCard.filterPropertiesByName(this.displayedProperties, 'email');
     },
     otherProperties: function() {
-      return this.rejectPropertiesByName(this.displayedProperties, ['fn', 'n', 'tel', 'email']);
+      return JCard.rejectPropertiesByName(this.displayedProperties, ['fn', 'n', 'tel', 'email']);
     }
   },
   watch: {
@@ -96,31 +97,6 @@ export default {
   methods: {
     revisionTimestamp: function(date) {
       return (new Date(date)).toISOString();
-    },
-    filterPropertiesByName: function(properties, name) {
-      if(typeof name === "string") {
-        return properties.filter(function(property) {
-          return property[0] == name
-        });
-      } else {
-        // assuming name is an array of names
-        return properties.filter(function(property) {
-          return name.includes(property[0]);
-        });
-      }
-    },
-    rejectPropertiesByName: function(properties, name) {
-      if(typeof name === "string") {
-        return properties.filter(function(property) {
-          return property[0] != name
-        });
-      } else {
-        // assuming name is an array of names
-        const names = name;
-        return properties.filter(function(property) {
-          return !names.includes(property[0]);
-        });
-      }
     },
     updateProperty: function(key, newValue) {
       console.log("updating property " + JSON.stringify(key) + " to " + JSON.stringify(newValue))
