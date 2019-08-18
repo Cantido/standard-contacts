@@ -73,30 +73,19 @@ export default {
       this.$emit('input', newComponent.toString());
     },
     displayedProperties: function() {
-      let propertyWhitelist = this.propertyWhitelist;
-      return this.jcard[1].filter(function(property) {
-        return propertyWhitelist.includes(property[0].toLowerCase())
-      });
+      return this.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);
     },
     nameProperties: function() {
-      return this.displayedProperties.filter(function(property) {
-        return ['n', 'fn'].includes(property[0]);
-      });
+      return this.filterPropertiesByName(this.displayedProperties, ['n', 'fn']);
     },
     phoneProperties: function() {
-      return this.displayedProperties.filter(function(property) {
-        return property[0] == 'tel'
-      });
+      return this.filterPropertiesByName(this.displayedProperties, 'tel');
     },
     emailProperties: function() {
-      return this.displayedProperties.filter(function(property) {
-        return property[0] == 'email'
-      });
+      return this.filterPropertiesByName(this.displayedProperties, 'email');
     },
     otherProperties: function() {
-      return this.displayedProperties.filter(function(property) {
-        return !['fn', 'n', 'tel', 'email'].includes(property[0].toLowerCase());
-      });
+      return this.rejectPropertiesByName(this.displayedProperties, ['fn', 'n', 'tel', 'email']);
     }
   },
   watch: {
@@ -107,6 +96,31 @@ export default {
   methods: {
     revisionTimestamp: function(date) {
       return (new Date(date)).toISOString();
+    },
+    filterPropertiesByName: function(properties, name) {
+      if(typeof name === "string") {
+        return properties.filter(function(property) {
+          return property[0] == name
+        });
+      } else {
+        // assuming name is an array of names
+        return properties.filter(function(property) {
+          return name.includes(property[0]);
+        });
+      }
+    },
+    rejectPropertiesByName: function(properties, name) {
+      if(typeof name === "string") {
+        return properties.filter(function(property) {
+          return property[0] != name
+        });
+      } else {
+        // assuming name is an array of names
+        const names = name;
+        return properties.filter(function(property) {
+          return !names.includes(property[0]);
+        });
+      }
     },
     updateProperty: function(key, newValue) {
       console.log("updating property " + JSON.stringify(key) + " to " + JSON.stringify(newValue))
