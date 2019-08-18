@@ -65,6 +65,14 @@ export default {
     };
   },
   computed: {
+    exportedJcard: function() {
+      let newComponent = new ICAL.Component(this.jcard);
+      const revTimestamp = this.revisionTimestamp(Date.now());
+      // Component.updatePropertyWithValue doesn't work
+      newComponent.removeProperty("REV");
+      newComponent.addPropertyWithValue("REV", revTimestamp);
+      this.$emit('input', newComponent.toString());
+    },
     displayedProperties: function() {
       let hiddenProperties = this.hiddenProperties;
       return this.jcard[1].filter(function(property) {
@@ -93,11 +101,14 @@ export default {
     }
   },
   watch: {
-    jcard: function(newval) {
-      this.$emit('input', new ICAL.Component(newval).toString());
+    exportedJcard: function(newval) {
+      this.$emit('input', new ICAL.Component(newval));
     },
   },
   methods: {
+    revisionTimestamp: function(date) {
+      return (new Date(date)).toISOString();
+    },
     updateProperty: function(key, newValue) {
       console.log("updating property " + JSON.stringify(key) + " to " + JSON.stringify(newValue))
       const keyForPropertyFn = this.keyForProperty;
