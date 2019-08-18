@@ -55,12 +55,11 @@ export default {
   data: function() {
     return {
       jcard: ICAL.parse(this.value),
-      hiddenProperties: [
-        'name',
-        'profile',
-        'source',
-        'prodid',
-        'version'
+      propertyWhitelist: [
+        'fn',
+        'n',
+        'email',
+        'tel'
       ]
     };
   },
@@ -74,9 +73,9 @@ export default {
       this.$emit('input', newComponent.toString());
     },
     displayedProperties: function() {
-      let hiddenProperties = this.hiddenProperties;
+      let propertyWhitelist = this.propertyWhitelist;
       return this.jcard[1].filter(function(property) {
-        return !hiddenProperties.includes(property[0].toLowerCase())
+        return propertyWhitelist.includes(property[0].toLowerCase())
       });
     },
     nameProperties: function() {
