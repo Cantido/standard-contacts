@@ -6,14 +6,14 @@
        makes that tricky. -->
   <section>
     <div v-for="(property, index) in nameProperties" :key="keyForProperty(property)">
-      <Property v-bind:value='nameProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
+      <Property v-bind:value='nameProperties[index].slice()' v-on:input="updatePropertyByPid(property[1].pid, $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
   </section>
 
   <section>
     <div v-for="(property, index) in phoneProperties" :key="keyForProperty(property)">
-      <Property v-bind:value='phoneProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
+      <Property v-bind:value='phoneProperties[index].slice()' v-on:input="updatePropertyByPid(property[1].pid, $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
     <span class="labelspacer"></span>
@@ -22,7 +22,7 @@
 
   <section>
     <div v-for="(property, index) in emailProperties" :key="keyForProperty(property)">
-      <Property v-bind:value='emailProperties[index].slice()' v-on:input="updateProperty(keyForProperty(property), $event)" />
+      <Property v-bind:value='emailProperties[index].slice()' v-on:input="updatePropertyByPid(property[1].pid, $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
     <span class="labelspacer"></span>
@@ -86,6 +86,7 @@ export default {
   },
   watch: {
     exportedJcard: function(newval) {
+      console.log(new ICAL.Component(newval).toString());
       this.$emit('input', new ICAL.Component(newval).toString());
     },
   },
@@ -93,7 +94,7 @@ export default {
     initJcard: function(vcard) {
       const jcard = ICAL.parse(vcard);
       const props = jcard[1];
-      const allPids = this.getAllPids(jcard);
+      const allPids = this.getAllPids(jcard[1]);
       let nextPid = 0;
       props.map(function(prop) {
         if(this.canHavePid(prop) && !(this.hasPid(prop))) {
@@ -109,7 +110,7 @@ export default {
       return jcard;
     },
     canHavePid: function(prop) {
-      return ['tel', 'email'].includes(prop[0]);
+      return !['version'].includes(prop[0]);
     },
     hasPid: function(prop) {
       return !!prop[1].pid
@@ -132,13 +133,10 @@ export default {
     revisionTimestamp: function(date) {
       return (new Date(date)).toISOString();
     },
-    updateProperty: function(key, newValue) {
-      console.log("updating property " + JSON.stringify(key) + " to " + JSON.stringify(newValue))
-      const keyForPropertyFn = this.keyForProperty;
-      const i = this.jcard[1].findIndex(function(element) {
-        return key == keyForPropertyFn(element);
+    updatePropertyByPid: function(pid, newValue) {
+      const i = this.jcard[1].findIndex(function(prop) {
+        return pid === prop[1].pid;
       });
-
       this.jcard[1].splice(i, 1, newValue);
     },
     pushProperty: function(property) {
