@@ -66,11 +66,7 @@ export default {
   },
   computed: {
     exportedJcard: function() {
-      let newComponent = new ICAL.Component(this.jcard);
-      const revTimestamp = this.revisionTimestamp(Date.now());
-      // Component.updatePropertyWithValue doesn't work
-      newComponent.removeProperty("REV");
-      newComponent.addPropertyWithValue("REV", revTimestamp);
+      return JCard.updateTimestamp(this.jcard);
     },
     displayedProperties: function() {
       return JCard.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);
