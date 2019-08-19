@@ -71,7 +71,6 @@ export default {
       // Component.updatePropertyWithValue doesn't work
       newComponent.removeProperty("REV");
       newComponent.addPropertyWithValue("REV", revTimestamp);
-      this.$emit('input', newComponent.toString());
     },
     displayedProperties: function() {
       return JCard.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);
@@ -91,7 +90,7 @@ export default {
   },
   watch: {
     exportedJcard: function(newval) {
-      this.$emit('input', new ICAL.Component(newval));
+      this.$emit('input', new ICAL.Component(newval).toString());
     },
   },
   methods: {
