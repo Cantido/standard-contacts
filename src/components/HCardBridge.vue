@@ -8,6 +8,7 @@
   <HCard
     v-if="vcard"
     v-bind:value="noteFromBridge"
+    v-bind:client-uuid="noteUUID"
     v-on:input="vcard = $event"
   />
 
@@ -36,6 +37,10 @@ export default {
     };
   },
   computed: {
+    noteUUID: function() {
+      const note = BridgeManager.get().getNote();
+      return note.uuid;
+    },
     noteFromBridge: function() {
       let note = BridgeManager.get().getNote();
       return note.content.text;

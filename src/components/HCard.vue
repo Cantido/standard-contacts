@@ -51,7 +51,8 @@ export default {
     Property
   },
   props: {
-    value: String
+    value: String,
+    clientUuid: String
   },
   data: function() {
     return {
