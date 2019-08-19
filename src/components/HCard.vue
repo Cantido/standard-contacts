@@ -87,7 +87,6 @@ export default {
   },
   watch: {
     exportedJcard: function(newval) {
-      console.log(new ICAL.Component(newval).toString());
       this.$emit('input', new ICAL.Component(newval).toString());
     },
   },
