@@ -114,7 +114,7 @@ export default {
       return ![
         'anniversary',
         'bday',
-        'clientpidmap'
+        'clientpidmap',
         'gender',
         'kind',
         'n',
