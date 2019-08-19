@@ -55,7 +55,7 @@ export default {
   },
   data: function() {
     return {
-      jcard: ICAL.parse(this.value),
+      jcard: this.initJcard(this.value),
       propertyWhitelist: [
         'fn',
         'n',
@@ -90,6 +90,45 @@ export default {
     },
   },
   methods: {
+    initJcard: function(vcard) {
+      const jcard = ICAL.parse(vcard);
+      const props = jcard[1];
+      const allPids = this.getAllPids(jcard);
+      let nextPid = 0;
+      props.map(function(prop) {
+        if(this.canHavePid(prop) && !(this.hasPid(prop))) {
+          while(allPids.includes(nextPid.toString())) {
+            nextPid++;
+          }
+          prop[1].pid = nextPid.toString();
+          nextPid++;
+        }
+        return prop;
+      }, this);
+      jcard[1] = props
+      return jcard;
+    },
+    canHavePid: function(prop) {
+      return ['tel', 'email'].includes(prop[0]);
+    },
+    hasPid: function(prop) {
+      return !!prop[1].pid
+    },
+    getAllPids: function(props) {
+      return props.flatMap(function(prop) {
+        if(!prop || !prop[1]) {
+          return [];
+        }
+        const pid = prop[1].pid;
+        if(typeof pid === 'object' && Array.isArray(pid)) {
+          return pid.map((p) => { p.toString() });
+        } else if(typeof pid === 'number' || typeof pid === 'string') {
+          return [pid.toString()];
+        } else {
+          return [];
+        }
+      });
+    },
     revisionTimestamp: function(date) {
       return (new Date(date)).toISOString();
     },
