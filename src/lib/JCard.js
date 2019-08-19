@@ -8,7 +8,7 @@ export function updateTimestamp(jcard) {
   let newComponent = new ICAL.Component(jcard);
   const revTimestamp = revisionTimestamp(Date.now());
   // Component.updatePropertyWithValue doesn't work
-  newComponent.removeProperty("REV");
+  newComponent.removeAllProperties("REV");
   newComponent.addPropertyWithValue("REV", revTimestamp);
 
   return ICAL.parse(newComponent.toString());
