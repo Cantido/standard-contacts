@@ -95,56 +95,9 @@ export default {
     initJcard: function(vcard) {
       const jcard = ICAL.parse(vcard);
       const props = jcard[1];
-      const allPids = this.getAllPids(jcard[1]);
-      let nextPid = 1;
-      props.map(function(prop) {
-        if(this.canHavePid(prop) && !(this.hasPid(prop))) {
-          while(allPids.includes(nextPid.toString())) {
-            nextPid++;
-          }
-          prop[1].pid = nextPid.toString();
-          nextPid++;
-        }
-        return prop;
-      }, this);
+      JCard.addPids(props)
       jcard[1] = props
       return jcard;
-    },
-    canHavePid: function(prop) {
-      // Any property with a maximum cardinality of 1 may not have a PID
-      return ![
-        'anniversary',
-        'bday',
-        'clientpidmap',
-        'gender',
-        'kind',
-        'n',
-        'prodid',
-        'rev',
-        'uid',
-        'version'
-      ].includes(prop[0]);
-    },
-    hasPid: function(prop) {
-      return !!prop[1].pid
-    },
-    getAllPids: function(props) {
-      return props.flatMap(function(prop) {
-        if(!prop || !prop[1]) {
-          return [];
-        }
-        const pid = prop[1].pid;
-        if(typeof pid === 'object' && Array.isArray(pid)) {
-          return pid.map((p) => { p.toString() });
-        } else if(typeof pid === 'number' || typeof pid === 'string') {
-          return [pid.toString()];
-        } else {
-          return [];
-        }
-      });
-    },
-    revisionTimestamp: function(date) {
-      return (new Date(date)).toISOString();
     },
     updatePropertyByName: function(name, newValue) {
       const i = this.jcard[1].findIndex(function(prop) {

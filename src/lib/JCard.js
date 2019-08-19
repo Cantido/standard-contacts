@@ -1,6 +1,57 @@
 import ICAL from 'ical.js';
 import VCard from 'ical.js';
 
+export function hasPid(prop) {
+  return !!prop[1].pid;
+}
+
+export function canHavePid (prop) {
+  // Any property with a maximum cardinality of 1 may not have a PID
+  return ![
+    'anniversary',
+    'bday',
+    'clientpidmap',
+    'gender',
+    'kind',
+    'n',
+    'prodid',
+    'rev',
+    'uid',
+    'version'
+  ].includes(prop[0]);
+}
+
+export function addPids(props) {
+  const allPids = getAllPids(props);
+  let nextPid = 1;
+  props.map(function(prop) {
+    if(canHavePid(prop) && !(hasPid(prop))) {
+      while(allPids.includes(nextPid.toString())) {
+        nextPid++;
+      }
+      prop[1].pid = nextPid.toString();
+      nextPid++;
+    }
+    return prop;
+  }, this);
+}
+
+export function getAllPids(props) {
+  return props.flatMap(function(prop) {
+    if(!prop || !prop[1]) {
+      return [];
+    }
+    const pid = prop[1].pid;
+    if(typeof pid === 'object' && Array.isArray(pid)) {
+      return pid.map((p) => { p.toString() });
+    } else if(typeof pid === 'number' || typeof pid === 'string') {
+      return [pid.toString()];
+    } else {
+      return [];
+    }
+  });
+}
+
 export function updateTimestamp(jcard, time) {
   let newComponent = new ICAL.Component(jcard);
 
