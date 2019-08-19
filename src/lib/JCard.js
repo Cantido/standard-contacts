@@ -1,13 +1,30 @@
 import ICAL from 'ical.js';
 
-function revisionTimestamp(date) {
-  return (new Date(date)).toISOString();
+function twoDigitString(n) {
+  if(n >= 10) {
+    return n.toString();
+  } else {
+    return "0" + n.toString();
+  }
 }
 
-export function updateTimestamp(jcard) {
+function revisionTimestamp(time) {
+  const timeObj = new Date(time);
+  return timeObj.getUTCFullYear().toString() +
+         twoDigitString(timeObj.getUTCMonth() + 1) +
+         twoDigitString(timeObj.getUTCDate()) +
+         "T" +
+         twoDigitString(timeObj.getUTCHours()) +
+         twoDigitString(timeObj.getUTCMinutes()) +
+         twoDigitString(timeObj.getUTCSeconds()) +
+         "Z";
+}
+
+export function updateTimestamp(jcard, time) {
   let newComponent = new ICAL.Component(jcard);
-  const revTimestamp = revisionTimestamp(Date.now());
+  const revTimestamp = revisionTimestamp(time);
   // Component.updatePropertyWithValue doesn't work
+  console.log("writing revision timestamp " + revTimestamp);
   newComponent.removeAllProperties("REV");
   newComponent.addPropertyWithValue("REV", revTimestamp);
 
