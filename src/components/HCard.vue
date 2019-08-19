@@ -6,7 +6,7 @@
        makes that tricky. -->
   <section>
     <div v-for="(property, index) in nameProperties" :key="keyForProperty(property)">
-      <Property v-bind:value='nameProperties[index].slice()' v-on:input="updatePropertyByPid(property[1].pid, $event)" />
+      <Property v-bind:value='nameProperties[index].slice()' v-on:input="updatePropertyByName(property[0], $event)" />
       <button type="button" name="button" @click="rmProperty(property)">&minus;</button>
     </div>
   </section>
@@ -110,7 +110,18 @@ export default {
       return jcard;
     },
     canHavePid: function(prop) {
-      return !['version'].includes(prop[0]);
+      // Any property with a maximum cardinality of 1 may not have a PID
+      return ![
+        'anniversary',
+        'bday',
+        'gender',
+        'kind',
+        'n',
+        'prodid',
+        'rev',
+        'uid',
+        'version'
+      ].includes(prop[0]);
     },
     hasPid: function(prop) {
       return !!prop[1].pid
@@ -132,6 +143,12 @@ export default {
     },
     revisionTimestamp: function(date) {
       return (new Date(date)).toISOString();
+    },
+    updatePropertyByName: function(name, newValue) {
+      const i = this.jcard[1].findIndex(function(prop) {
+        return name === prop[0];
+      });
+      this.jcard[1].splice(i, 1, newValue);
     },
     updatePropertyByPid: function(pid, newValue) {
       const i = this.jcard[1].findIndex(function(prop) {
