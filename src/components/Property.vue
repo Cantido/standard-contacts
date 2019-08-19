@@ -34,7 +34,6 @@ export default {
   },
   watch: {
     jCardPropType: function(newPropType) {
-      console.log("emitting change to jprop type to " + JSON.stringify(newPropType));
       this.$emit('input', [
         this.uglyPropertyName,
         {
@@ -46,7 +45,6 @@ export default {
       ]);
     },
     jCardPropValue: function(newValue) {
-      console.log("emitting change to jprop value to " + JSON.stringify(newValue));
       this.$emit('input', [
         this.uglyPropertyName,
         this.jCardPropParams,

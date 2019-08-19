@@ -5,8 +5,6 @@ export function updateTimestamp(jcard, time) {
   let newComponent = new ICAL.Component(jcard);
 
   newComponent.updatePropertyWithValue("rev", VCard.Time.fromJSDate(time, true));
-  console.log(newComponent.toString());
-
   return ICAL.parse(newComponent.toString());
 }
 
