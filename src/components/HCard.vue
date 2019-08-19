@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     exportedJcard: function() {
-      return JCard.updateTimestamp(this.jcard, Date.now());
+      return JCard.updateTimestamp(this.jcard, new Date());
     },
     displayedProperties: function() {
       return JCard.filterPropertiesByName(this.jcard[1], this.propertyWhitelist);

@@ -1,32 +1,11 @@
 import ICAL from 'ical.js';
-
-function twoDigitString(n) {
-  if(n >= 10) {
-    return n.toString();
-  } else {
-    return "0" + n.toString();
-  }
-}
-
-function revisionTimestamp(time) {
-  const timeObj = new Date(time);
-  return timeObj.getUTCFullYear().toString() +
-         twoDigitString(timeObj.getUTCMonth() + 1) +
-         twoDigitString(timeObj.getUTCDate()) +
-         "T" +
-         twoDigitString(timeObj.getUTCHours()) +
-         twoDigitString(timeObj.getUTCMinutes()) +
-         twoDigitString(timeObj.getUTCSeconds()) +
-         "Z";
-}
+import VCard from 'ical.js';
 
 export function updateTimestamp(jcard, time) {
   let newComponent = new ICAL.Component(jcard);
-  const revTimestamp = revisionTimestamp(time);
-  // Component.updatePropertyWithValue doesn't work
-  console.log("writing revision timestamp " + revTimestamp);
-  newComponent.removeAllProperties("REV");
-  newComponent.addPropertyWithValue("REV", revTimestamp);
+
+  newComponent.updatePropertyWithValue("rev", VCard.Time.fromJSDate(time, true));
+  console.log(newComponent.toString());
 
   return ICAL.parse(newComponent.toString());
 }
