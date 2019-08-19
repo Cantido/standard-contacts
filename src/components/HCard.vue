@@ -95,7 +95,7 @@ export default {
       const jcard = ICAL.parse(vcard);
       const props = jcard[1];
       const allPids = this.getAllPids(jcard[1]);
-      let nextPid = 0;
+      let nextPid = 1;
       props.map(function(prop) {
         if(this.canHavePid(prop) && !(this.hasPid(prop))) {
           while(allPids.includes(nextPid.toString())) {
