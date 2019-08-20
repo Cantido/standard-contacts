@@ -42,8 +42,9 @@ export function getAllPids(props) {
       return [];
     }
     const pid = prop[1].pid;
-    if(typeof pid === 'object' && Array.isArray(pid)) {
-      return pid.map((p) => { p.toString() });
+    if(Array.isArray(pid)) {
+      const pids = pid.map((p) => { return p.toString() });
+      return pids
     } else if(typeof pid === 'number' || typeof pid === 'string') {
       return [pid.toString()];
     } else {
