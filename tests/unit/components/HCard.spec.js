@@ -1,5 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import HCard from '@/components/HCard.vue'
+import Property from '@/components/Property.vue'
 
 describe('HCard.vue', () => {
   const vcard = `BEGIN:VCARD
@@ -16,6 +17,10 @@ END:VCARD`;
     const wrapper = shallowMount(HCard, {
       propsData: { value }
     })
-    expect(wrapper.html()).toContain('<property-stub')
+    const properties = wrapper.findAll(Property)
+    expect(properties.at(0).props().value).toEqual(["n", {}, "text", ["Anderson", "Thomas"]])
+    expect(properties.at(1).props().value).toEqual(["fn", {"pid": "1"}, "text", "Thomas Anderson"])
+    expect(properties.at(2).props().value).toEqual(["tel", {"pid": "2", "type": "CELL"}, "phone-number", "+1 (555) 555-5555"])
+    expect(properties.at(3).props().value).toEqual(["email", {"pid": "3", "type": "HOME"}, "text", "neo@example.com"])
   })
 })
