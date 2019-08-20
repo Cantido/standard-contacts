@@ -5,7 +5,7 @@ export function hasPid(prop) {
   return !!prop[1].pid;
 }
 
-export function canHavePid (prop) {
+function canHavePid (prop) {
   // Any property with a maximum cardinality of 1 may not have a PID
   return ![
     'anniversary',
@@ -36,7 +36,7 @@ export function addPids(props) {
   });
 }
 
-export function getAllPids(props) {
+function getAllPids(props) {
   return props.flatMap(function(prop) {
     if(!prop || !prop[1]) {
       return [];
