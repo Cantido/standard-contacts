@@ -41,7 +41,5 @@
       "autoprefixer": {}
     }
   },
-  "browserslist": [
-    "last 1 electron version"
-  ]
+  "browserslist": "electron 1.8"
 }
