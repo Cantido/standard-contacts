@@ -24,7 +24,7 @@ export function canHavePid (prop) {
 export function addPids(props) {
   const allPids = getAllPids(props);
   let nextPid = 1;
-  props.map(function(prop) {
+  return props.map(function(prop) {
     if(canHavePid(prop) && !(hasPid(prop))) {
       while(allPids.includes(nextPid.toString())) {
         nextPid++;
@@ -33,7 +33,7 @@ export function addPids(props) {
       nextPid++;
     }
     return prop;
-  }, this);
+  });
 }
 
 export function getAllPids(props) {
