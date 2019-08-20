@@ -12,15 +12,22 @@ TEL;TYPE=CELL;VALUE=PHONE-NUMBER:+1 (555) 555-5555
 EMAIL;TYPE=HOME:neo@example.com
 END:VCARD`;
 
+  const jcard = [
+    ["n", {}, "text", ["Anderson", "Thomas"]],
+    ["fn", {"pid": "1"}, "text", "Thomas Anderson"],
+    ["tel", {"pid": "2", "type": "CELL"}, "phone-number", "+1 (555) 555-5555"],
+    ["email", {"pid": "3", "type": "HOME"}, "text", "neo@example.com"]
+  ]
+
   it('renders props when passed', () => {
     const value = vcard;
     const wrapper = shallowMount(HCard, {
       propsData: { value }
     })
     const properties = wrapper.findAll(Property)
-    expect(properties.at(0).props().value).toEqual(["n", {}, "text", ["Anderson", "Thomas"]])
-    expect(properties.at(1).props().value).toEqual(["fn", {"pid": "1"}, "text", "Thomas Anderson"])
-    expect(properties.at(2).props().value).toEqual(["tel", {"pid": "2", "type": "CELL"}, "phone-number", "+1 (555) 555-5555"])
-    expect(properties.at(3).props().value).toEqual(["email", {"pid": "3", "type": "HOME"}, "text", "neo@example.com"])
+    expect(properties.at(0).props().value).toEqual(jcard[0])
+    expect(properties.at(1).props().value).toEqual(jcard[1])
+    expect(properties.at(2).props().value).toEqual(jcard[2])
+    expect(properties.at(3).props().value).toEqual(jcard[3])
   })
 })
